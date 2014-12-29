@@ -1,0 +1,12 @@
+application: bench-fortune
+module: php
+version: 1
+runtime: php
+api_version: 1
+threadsafe: true
+
+handlers:
+- url: /
+  script: fortune.php
+- url: /(.+\.php)$
+  script: \1

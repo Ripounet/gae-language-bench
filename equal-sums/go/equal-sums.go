@@ -19,6 +19,8 @@ func init() {
 		}
 		//caseInts := []int64{120, 266, 858, 1243, 1657, 1771, 2328, 2490, 2665, 2894, 3117, 4210, 4454, 4943, 5690, 6170, 7048, 7125, 9512, 9600}
 		msg := solve(caseInts)
+		
+		w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 		w.Write([]byte("(Go) \n"))
 		w.Write([]byte(msg))
 	})
