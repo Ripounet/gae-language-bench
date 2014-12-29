@@ -73,19 +73,4 @@ class EqualSums{
 		}
 	}
 	
-	static long[][] sample(){
-		return new long[][]{
-				{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20},
-				{120, 266, 858, 1243, 1657, 1771, 2328, 2490, 2665, 2894, 3117, 4210, 4454, 4943, 5690, 6170, 7048, 7125, 9512, 9600},
-		};
-	}
-	
-	static long[][] randomCases(int T, int N, long supremum){
-		long[][] x = new long[T][N];
-		Random r = new Random();
-		for(int t=0;t<T;t++)
-			for(int i=0;i<N;i++)
-				x[t][i] = Math.abs(r.nextLong())%supremum;
-		return x;
-	}
 }
