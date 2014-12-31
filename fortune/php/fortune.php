@@ -1,1 +1,1 @@
-Fortune
+(php) Tonight you will get <?= rand(2, 11) ?> beers.
