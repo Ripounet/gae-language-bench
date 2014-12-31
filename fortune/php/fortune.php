@@ -1,1 +1,7 @@
-(php) Tonight you will get <?= rand(2, 11) ?> beers.
+<?
+	header("Content-type: text/plain");
+	echo("(php)\n");
+	echo("Tonight you will get ");
+	echo( rand(2, 11) );
+	echo(" beers.");
+?>

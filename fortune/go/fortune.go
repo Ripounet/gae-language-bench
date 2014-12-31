@@ -10,6 +10,6 @@ func init() {
 
 func fortune(w http.ResponseWriter, r *http.Request) {
 	N := 2 + rand.Intn(10)
-	msg := fmt.Sprintf("(Go) Tonight you will get %d beers.", N)
+	msg := fmt.Sprintf("(Go)\nTonight you will get %d beers.", N)
 	w.Write([]byte(msg))
 }

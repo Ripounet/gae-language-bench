@@ -14,7 +14,8 @@ public class FortuneServlet extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.setContentType("text/plain");
-        resp.getWriter().print("(Java) Tonight you will get ");
+        resp.getWriter().print("(Java)\n");
+        resp.getWriter().print("Tonight you will get ");
         int n = 2 + r.nextInt(10);
         resp.getWriter().print(n);
         resp.getWriter().println(" beers.");
