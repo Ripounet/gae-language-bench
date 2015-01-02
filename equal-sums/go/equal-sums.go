@@ -1,5 +1,9 @@
 package fosdem2015
 
+// Solution for problem "Equal Sums" from Google Code Jam 2012
+// 
+// See https://code.google.com/codejam/contest/1836486/dashboard#s=p2
+ 
 import (
 	"net/http"
 	"fmt"
