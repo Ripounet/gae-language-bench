@@ -24,6 +24,7 @@ class EqualSumsPython extends Simulation {
 			.get(host + """/?case=${case}"""))
 
 	setUp(scn.inject(
-		rampUsersPerSec(1) to(1) during(10 seconds)
+//		rampUsers(600) over(10 minutes)
+		rampUsersPerSec(0.05) to (4) during (10 minutes)
 	)).protocols(httpProtocol)
 }
