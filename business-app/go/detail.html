@@ -1,0 +1,21 @@
+{{define "page-detail"}}
+<html>
+<head>
+  <title>Detail of gopher {{.Gopher.Id}}</title>
+</head>
+<body>
+
+  <table>
+    <tr>
+      <th>Id</th>
+      <th>Name</th>
+    </tr>
+    <tr>
+      <td>{{.Gopher.Id}}</td>
+      <td>{{.Gopher.Name}}</td>
+    </tr>
+  </table>
+
+</body>
+</html>
+{{end}}
