@@ -5,10 +5,12 @@ package fosdem2015
 // See https://code.google.com/codejam/contest/1836486/dashboard#s=p2
  
 import (
+	"appengine"
 	"net/http"
 	"fmt"
 	"math/rand"
 	"sort"
+	"runtime"
 	"strings"
 	"strconv"
 )
@@ -27,6 +29,11 @@ func init() {
 		w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 		w.Write([]byte("(Go) \n"))
 		w.Write([]byte(msg))
+		
+		c := appengine.NewContext(r)
+		var mem runtime.MemStats
+		runtime.ReadMemStats(&mem)
+		c.Infof("\n\n\nruntime.ReadMemStats(&mem) = %v \n", mem)
 	})
 }
 
@@ -38,7 +45,7 @@ type sol [Y]int64
 
 func solve(in []int64) string {
 	N := len(in)
-	memo := make(map[int64]sol, 1000000)
+	memo := make(map[int64]sol)
 	var cur sol
 	for {
 		for i := 0; i < Y; i++ {
