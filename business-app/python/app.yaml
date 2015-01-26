@@ -7,7 +7,7 @@ threadsafe: yes
 
 handlers:
 - url: .*
-  script: guestbook.app
+  script: businessapp.app
 
 libraries:
 - name: webapp2
