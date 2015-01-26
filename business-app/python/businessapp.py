@@ -19,18 +19,8 @@ import datetime
 import webapp2
 
 from google.appengine.ext import ndb
-from google.appengine.api import users
-
-guestbook_key = ndb.Key('Guestbook', 'default_guestbook')
-gopher_key = ndb.Key('Gopher', 'Gopher')
-
-class Greeting(ndb.Model):
-  author = ndb.UserProperty()
-  content = ndb.TextProperty()
-  date = ndb.DateTimeProperty(auto_now_add=True)
 
 class Gopher(ndb.Model):
-  Id = ndb.IntegerProperty()
   Name = ndb.TextProperty()
 
 class List(webapp2.RequestHandler):
@@ -38,19 +28,20 @@ class List(webapp2.RequestHandler):
     self.response.out.write('<html><body>')
 
     gophers = ndb.gql('SELECT * '
-                        'FROM Gopher '
-                        'ORDER BY Name DESC LIMIT 20')
-
+                        'FROM Gopher ')
+#                        'ORDER BY Name DESC LIMIT 20')
 	
     self.response.out.write('<table> <tr><th>Id</th><th>Name</th></tr> ')
-
     for gopher in gophers:
-      self.response.out.write('<tr><td>%s</td><td>%s</td></tr> \n' % gopher.Id() % gopher.Name())
-
+      self.response.out.write('<tr>')
+      self.response.out.write('<td>%s</td>' % gopher.key.id())
+      self.response.out.write('<td>%s</td>' % gopher.Name)
+      self.response.out.write('</tr> \n')
     self.response.out.write('</table> ')
 
     self.response.out.write("""
           <form action="/save" method="post">
+            New Gopher
             <div>Id<input type="text" name="id"></div>
             <div>Name<input type="text" name="name"></div>
             <div><input type="submit" value="Save"></div>
@@ -61,26 +52,50 @@ class List(webapp2.RequestHandler):
 
 class Detail(webapp2.RequestHandler):
   def get(self):
-    self.request.get('id')
-    greeting = Greeting(parent=guestbook_key)
+    id=int(self.request.get('id'))
+    gopher_key = ndb.Key('Gopher', id)
+    gopher=Gopher.get_by_id(id)
+	
+    self.response.out.write("""
+		<html>
+		<head>
+	""")
+    self.response.out.write("""
+		  <title>Detail of gopher %s</title>
+	""" % gopher.key.id())
+    self.response.out.write("""
+		</head>
+		<body>
+		
+		  <table>
+		    <tr>
+		      <th>Id</th>
+		      <th>Name</th>
+		    </tr>
+		    <tr>
+	""")
+    self.response.out.write("""
+		      <td>%s</td>
+	""" % gopher.key.id())
+    self.response.out.write("""
+		      <td>%s</td>
+	""" % gopher.Name)
+    self.response.out.write("""
+		    </tr>
+		  </table>
+		
+		</body>
+		</html>
+      """)
 
-    if users.get_current_user():
-      greeting.author = users.get_current_user()
 
-    greeting.content = self.request.get('content')
-    greeting.put()
-    self.redirect('/')
-    
-    
 class Save(webapp2.RequestHandler):
   def post(self):
-    gopher = Gopher()
-
-    gopher.Id = self.request.get('id')
+    gopher = Gopher(id=int(self.request.get('id')))
     gopher.Name = self.request.get('name')
     gopher.put()
-    #self.redirect('/detail?id=' + gopher.Id)
-    self.redirect('/')
+    self.redirect('/detail?id=' + str(gopher.key.id()))
+    #self.redirect('/')
 
 
 app = webapp2.WSGIApplication([
