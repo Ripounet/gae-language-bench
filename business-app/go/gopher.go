@@ -1,7 +1,7 @@
 package businessapp
 
 type Gopher struct {
-	Id   string
+	Id   int64 `datastore:"-"`
 	Name string
 }
 

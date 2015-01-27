@@ -5,6 +5,7 @@ import (
 	"encoding/gob"
 	"html/template"
 	"net/http"
+	"strconv"
 
 	"appengine"
 	"appengine/datastore"
@@ -43,10 +44,13 @@ func list(w http.ResponseWriter, r *http.Request) {
 		// Not found, search the list in the Datastore
 		c.Infof("gopher-list not found in Memcache")
 		q := datastore.NewQuery("Gopher").Order("Name").Limit(20)
-		_, err := q.GetAll(c, &gophers)
+		keys, err := q.GetAll(c, &gophers)
 		if err != nil {
 			http.Error(w, "While getting the list in Datastore: "+err.Error(), http.StatusInternalServerError)
 			return
+		}
+		for i, key := range keys {
+			gophers[i].Id = key.IntID()
 		}
 
 		// Set list in Memcache
@@ -61,7 +65,7 @@ func list(w http.ResponseWriter, r *http.Request) {
 
 	data := map[string]interface{}{
 		"Response": "...list response...",
-		"Gophers": gophers,
+		"Gophers":  gophers,
 	}
 	err = t.ExecuteTemplate(w, "page-list", data)
 	if err != nil {
@@ -71,18 +75,19 @@ func list(w http.ResponseWriter, r *http.Request) {
 
 func detail(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
-	gopherId := r.FormValue("id")
+	gopherIdStr := r.FormValue("id")
+	gopherId, _ := strconv.ParseInt(gopherIdStr, 10, 64)
 
 	// Get the gopher in Memcache
-	gopher, err := readCache(c, "gopher-"+gopherId)
+	gopher, err := readCache(c, "gopher-"+gopherIdStr)
 	if err != nil {
 		http.Error(w, "While getting the gopher in Memcache: "+err.Error(), http.StatusInternalServerError)
 		return
 	}
 	if gopher == nil {
 		// Not found, get the gopher in the Datastore
-		c.Infof("gopher-" + gopherId + " not found in Memcache")
-		gopherKey := datastore.NewKey(c, "Gopher", gopherId, 0, nil)
+		c.Infof("gopher-" + gopherIdStr + " not found in Memcache")
+		gopherKey := datastore.NewKey(c, "Gopher", "", gopherId, nil)
 		var gopher Gopher
 		err := datastore.Get(c, gopherKey, &gopher)
 		if err != nil {
@@ -91,7 +96,7 @@ func detail(w http.ResponseWriter, r *http.Request) {
 		}
 
 		// Set gopher in Memcache
-		err = writeCache(c, "gopher-"+gopherId, gopher)
+		err = writeCache(c, "gopher-"+gopherIdStr, gopher)
 		if err != nil {
 			http.Error(w, "While setting the gopher in Memcache: "+err.Error(), http.StatusInternalServerError)
 			return
@@ -110,7 +115,8 @@ func detail(w http.ResponseWriter, r *http.Request) {
 
 func save(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
-	gopherId := r.FormValue("id")
+	gopherIdStr := r.FormValue("id")
+	gopherId, _ := strconv.ParseInt(gopherIdStr, 10, 64)
 	gopherName := r.FormValue("name")
 	gopher := Gopher{
 		Id:   gopherId,
@@ -118,13 +124,13 @@ func save(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Save gopher in Datastore
-	gopherKey := datastore.NewKey(c, "Gopher", gopherId, 0, nil)
+	gopherKey := datastore.NewKey(c, "Gopher", "", gopherId, nil)
 	_, err := datastore.Put(c, gopherKey, &gopher)
 
 	// Set gopher in Memcache
-	err = writeCache(c, "gopher-"+gopherId, gopher)
+	err = writeCache(c, "gopher-"+gopherIdStr, gopher)
 	if err != nil {
-		http.Error(w, "While getting gopher-"+gopherId+" in Memcache: "+err.Error(), http.StatusInternalServerError)
+		http.Error(w, "While getting gopher-"+gopherIdStr+" in Memcache: "+err.Error(), http.StatusInternalServerError)
 		return
 	}
 
@@ -139,7 +145,7 @@ func save(w http.ResponseWriter, r *http.Request) {
 	// to be there : eventual consistency :(
 	//http.Redirect(w, r, "/", http.StatusFound)
 
-	http.Redirect(w, r, "/detail?id="+gopherId, http.StatusFound)
+	http.Redirect(w, r, "/detail?id="+gopherIdStr, http.StatusFound)
 }
 
 func readCache(c appengine.Context, cacheKey string) (interface{}, error) {

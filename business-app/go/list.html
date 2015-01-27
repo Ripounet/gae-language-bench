@@ -17,7 +17,16 @@
     </tr>
     {{end}}
   </table>
+  
+  <hr/>
 
+  <form action="/save" method="post">
+    New Gopher
+    <div>Id<input type="text" name="id"></div>
+    <div>Name<input type="text" name="name"></div>
+    <div><input type="submit" value="Save"></div>
+  </form>
+          
 </body>
 </html>
 {{end}}
