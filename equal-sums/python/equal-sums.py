@@ -39,4 +39,4 @@ class EqualSums(webapp2.RequestHandler):
 
 application = webapp2.WSGIApplication([
     ('/', EqualSums),
-], debug=True)
+], debug=False)

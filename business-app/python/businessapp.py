@@ -1,19 +1,5 @@
 #!/usr/bin/env python
-#
-# Copyright 2007 Google Inc.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-#
+
 import cgi
 import datetime
 import webapp2
@@ -40,6 +26,8 @@ class List(webapp2.RequestHandler):
     self.response.out.write('</table> ')
 
     self.response.out.write("""
+  		  <hr/>
+  
           <form action="/save" method="post">
             New Gopher
             <div>Id<input type="text" name="id"></div>
@@ -83,6 +71,10 @@ class Detail(webapp2.RequestHandler):
     self.response.out.write("""
 		    </tr>
 		  </table>
+		  
+		  <hr/>
+		  
+		  <a href="/">Return to list</a>
 		
 		</body>
 		</html>
@@ -102,4 +94,4 @@ app = webapp2.WSGIApplication([
   ('/', List),
   ('/detail', Detail),
   ('/save', Save)
-], debug=True)
+], debug=False)
