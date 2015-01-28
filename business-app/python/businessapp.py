@@ -7,7 +7,7 @@ import webapp2
 from google.appengine.ext import ndb
 
 class Gopher(ndb.Model):
-  Name = ndb.TextProperty()
+  Name = ndb.StringProperty()
 
 class List(webapp2.RequestHandler):
   def get(self):

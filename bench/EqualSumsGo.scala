@@ -12,8 +12,9 @@ class EqualSumsGo extends Simulation {
 		.acceptEncodingHeader("gzip, deflate")
 		.acceptLanguageHeader("en-US,en;q=0.5")
 		.connection("keep-alive")
-		.userAgentHeader("Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:34.0) Gecko/20100101 Firefox/34.0")
+		.userAgentHeader("Valentin load test with Gatling")
 
+    // val host = "http://localhost:8080" 
     val host = "http://go.bench-equal-sums.appspot.com"
 
 	val caseFeeder = csv("equalSumsInput.csv").circular
@@ -25,6 +26,6 @@ class EqualSumsGo extends Simulation {
 
 	setUp(scn.inject(
 //		rampUsers(600) over(10 minutes)
-		rampUsersPerSec(0.05) to (4) during (10 minutes) 
+		rampUsersPerSec(0.05) to (0.5) during (2 minutes) 
 	)).protocols(httpProtocol)
 }
