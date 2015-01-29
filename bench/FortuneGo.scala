@@ -5,6 +5,8 @@ import io.gatling.core.Predef._
 import io.gatling.http.Predef._
 import io.gatling.jdbc.Predef._
 
+import util.Random
+
 class FortuneGo extends Simulation {
 
 	val httpProtocol = http
@@ -16,7 +18,8 @@ class FortuneGo extends Simulation {
 
 	val scn = scenario("Fortune")
 		.exec(http("Homepage")
-			.get("/"))
+			.get("/")
+			.queryParam("x", _ => Random.nextInt))
 
 	setUp(scn.inject(
 		rampUsersPerSec(0.2) to(1) during(30 seconds)
