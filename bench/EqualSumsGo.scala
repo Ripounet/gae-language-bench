@@ -17,7 +17,7 @@ class EqualSumsGo extends Simulation {
     // val host = "http://localhost:8080" 
     val host = "http://go.bench-equal-sums.appspot.com"
 
-	val caseFeeder = csv("equalSumsInput8digits.csv").circular
+	val caseFeeder = csv("equalSumsInput10digits.csv").circular
 
 	val scn = scenario("EqualSumsGo")
     	.feed(caseFeeder)
@@ -25,7 +25,6 @@ class EqualSumsGo extends Simulation {
 			.get(host + """/?case=${case}"""))
 
 	setUp(scn.inject(
-//		rampUsers(600) over(10 minutes)
-		rampUsersPerSec(0.05) to (0.5) during (2 minutes) 
+		rampUsersPerSec(0.2) to(10) during(10 minutes)
 	)).protocols(httpProtocol)
 }

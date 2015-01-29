@@ -16,7 +16,7 @@ class EqualSumsPhp extends Simulation {
 
     val host = "http://php.bench-equal-sums.appspot.com"
 
-	val caseFeeder = csv("equalSumsInput8digits.csv").circular
+	val caseFeeder = csv("equalSumsInput10digits.csv").circular
 
 	val scn = scenario("EqualSumsPhp")
     	.feed(caseFeeder)
@@ -24,7 +24,6 @@ class EqualSumsPhp extends Simulation {
 			.get(host + """/?case=${case}"""))
 
 	setUp(scn.inject(
-//		rampUsers(600) over(10 minutes)
-		rampUsersPerSec(0.05) to (4) during (10 minutes)
+		rampUsersPerSec(0.2) to(10) during(10 minutes)
 	)).protocols(httpProtocol)
 }
