@@ -5,12 +5,12 @@ package fosdem2015
 // See https://code.google.com/codejam/contest/1836486/dashboard#s=p2
  
 import (
-	"appengine"
+//	"appengine"
 	"net/http"
 	"fmt"
 	"math/rand"
 	"sort"
-	"runtime"
+//	"runtime"
 	"strings"
 	"strconv"
 )
@@ -30,10 +30,12 @@ func init() {
 		w.Write([]byte("(Go) \n"))
 		w.Write([]byte(msg))
 		
+		/*
 		c := appengine.NewContext(r)
 		var mem runtime.MemStats
 		runtime.ReadMemStats(&mem)
 		c.Infof("\n\n\nruntime.ReadMemStats(&mem) = %v \n", mem)
+		*/
 	})
 }
 
