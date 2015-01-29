@@ -19,7 +19,7 @@ class FortuneGo extends Simulation {
 	val scn = scenario("Fortune")
 		.exec(http("Homepage")
 			.get("/")
-			.queryParam("x", _ => Random.nextInt))
+			.queryParam("x", _ => 100 + Random.nextInt(900)))
 
 	setUp(scn.inject(
 		rampUsersPerSec(0.2) to(1) during(30 seconds)
