@@ -22,7 +22,7 @@ class FortuneGo extends Simulation {
 			.queryParam("x", _ => 100 + Random.nextInt(900)))
 
 	setUp(scn.inject(
-		rampUsersPerSec(0.2) to(1) during(30 seconds)
+		rampUsersPerSec(0.2) to(10) during(10 minutes)
 		)).protocols(httpProtocol
 			.baseURL("http://go.bench-fortune.appspot.com"))
 		

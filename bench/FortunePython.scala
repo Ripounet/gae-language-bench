@@ -19,7 +19,7 @@ class FortunePython extends Simulation {
 			.get("/"))
 
 	setUp(scn.inject(
-		rampUsersPerSec(0.2) to(100) during(10 minutes)
+		rampUsersPerSec(0.2) to(10) during(10 minutes)
 		)).protocols(httpProtocol
 			.baseURL("http://python.bench-fortune.appspot.com"))
 		
