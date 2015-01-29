@@ -16,7 +16,7 @@ class EqualSumsJava extends Simulation {
 
     val host = "http://java.bench-equal-sums.appspot.com"
 
-	val caseFeeder = csv("equalSumsInput10digits.csv").circular
+	val caseFeeder = csv("equalSumsInput9digits.csv").circular
 
 	val scn = scenario("EqualSumsJava")
     	.feed(caseFeeder)

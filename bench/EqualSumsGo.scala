@@ -17,7 +17,7 @@ class EqualSumsGo extends Simulation {
     // val host = "http://localhost:8080" 
     val host = "http://go.bench-equal-sums.appspot.com"
 
-	val caseFeeder = csv("equalSumsInput10digits.csv").circular
+	val caseFeeder = csv("equalSumsInput9digits.csv").circular
 
 	val scn = scenario("EqualSumsGo")
     	.feed(caseFeeder)
