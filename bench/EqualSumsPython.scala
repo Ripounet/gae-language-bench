@@ -16,7 +16,7 @@ class EqualSumsPython extends Simulation {
 
     val host = "http://python.bench-equal-sums.appspot.com"
 
-	val caseFeeder = csv("equalSumsInput.csv").circular
+	val caseFeeder = csv("equalSumsInput8digits.csv").circular
 
 	val scn = scenario("EqualSumsPython")
     	.feed(caseFeeder)

@@ -16,7 +16,7 @@ class EqualSumsPhp extends Simulation {
 
     val host = "http://php.bench-equal-sums.appspot.com"
 
-	val caseFeeder = csv("equalSumsInput.csv").circular
+	val caseFeeder = csv("equalSumsInput8digits.csv").circular
 
 	val scn = scenario("EqualSumsPhp")
     	.feed(caseFeeder)
