@@ -14,7 +14,7 @@ class FortuneJava extends Simulation {
 		.acceptEncodingHeader("gzip, deflate")
 		.acceptLanguageHeader("en-US,en;q=0.5")
 		.connection("keep-alive")
-		.userAgentHeader("Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:34.0) Gecko/20100101 Firefox/34.0")
+		.userAgentHeader("Valentin load test with Gatling")
 
 	val scn = scenario("Fortune")
 		.exec(http("Homepage")
