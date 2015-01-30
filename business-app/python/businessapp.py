@@ -14,8 +14,8 @@ class List(webapp2.RequestHandler):
     self.response.out.write('<html><body>')
 
     gophers = ndb.gql('SELECT * '
-                        'FROM Gopher ')
-#                        'ORDER BY Name DESC LIMIT 20')
+                        'FROM Gopher '
+                        'ORDER BY Name DESC LIMIT 20')
 	
     self.response.out.write('<table> <tr><th>Id</th><th>Name</th></tr> ')
     for gopher in gophers:
