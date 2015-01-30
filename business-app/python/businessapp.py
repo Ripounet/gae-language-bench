@@ -17,8 +17,8 @@ class List(webapp2.RequestHandler):
     gophers = memcache.get('gopher-list-py')
     if gophers is None:
       gophers = ndb.gql('SELECT * '
-                        'FROM Gopher '
-                        'ORDER BY Name DESC LIMIT 20')
+                        'FROM Gopher ')
+#                        'ORDER BY Name DESC LIMIT 20')
       memcache.add('gopher-list-py', gophers)
 	
     self.response.out.write('<table> <tr><th>Id</th><th>Name</th></tr> ')
@@ -45,8 +45,12 @@ class List(webapp2.RequestHandler):
 class Detail(webapp2.RequestHandler):
   def get(self):
     id=int(self.request.get('id'))
-    gopher_key = ndb.Key('Gopher', id)
-    gopher=Gopher.get_by_id(id)
+    
+    gopher = memcache.get('gopher-' + str(id) + '-py')
+    if gopher is None:
+      gopher_key = ndb.Key('Gopher', id)
+      gopher=Gopher.get_by_id(id)
+      memcache.add('gopher-' + str(id) + '-py', gopher)
 	
     self.response.out.write("""
 		<html>
