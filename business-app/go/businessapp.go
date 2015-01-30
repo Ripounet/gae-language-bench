@@ -89,20 +89,22 @@ func detail(w http.ResponseWriter, r *http.Request) {
 		// Not found, get the gopher in the Datastore
 		c.Infof("gopher-" + gopherIdStr + " not found in Memcache")
 		gopherKey := datastore.NewKey(c, "Gopher", "", gopherId, nil)
-		var gopher Gopher
-		err := datastore.Get(c, gopherKey, &gopher)
+		var trueGopher Gopher
+		err := datastore.Get(c, gopherKey, &trueGopher)
 		if err != nil {
 			//http.Error(w, "While getting the gopher in Datastore: "+err.Error(), http.StatusInternalServerError)
 			fmt.Fprintf(w, "No gopher %v (yet).\n", gopherIdStr)
 			return
 		}
+		trueGopher.Id = gopherKey.IntID()
 
 		// Set gopher in Memcache
-		err = writeCache(c, "gopher-"+gopherIdStr, gopher)
+		err = writeCache(c, "gopher-"+gopherIdStr, trueGopher)
 		if err != nil {
 			http.Error(w, "While setting the gopher in Memcache: "+err.Error(), http.StatusInternalServerError)
 			return
 		}
+		gopher = trueGopher
 	}
 
 	data := map[string]interface{}{
