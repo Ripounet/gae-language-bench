@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class BusinessAppServlet extends HttpServlet {
+public class SaveServlet extends HttpServlet {
 	
     public class BusinessAppServlet extends HttpServlet {
 		
