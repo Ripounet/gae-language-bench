@@ -25,7 +25,8 @@ class List(webapp2.RequestHandler):
     for gopher in gophers:
       self.response.out.write('<tr>')
       self.response.out.write('<td>%s</td>' % gopher.key.id())
-      self.response.out.write('<td>%s</td>' % gopher.Name)
+      self.response.out.write('<td><a href="detail?id=%s">' % gopher.key.id() )
+      self.response.out.write('%s</a></td>' % gopher.Name)
       self.response.out.write('</tr> \n')
     self.response.out.write('</table> ')
 
