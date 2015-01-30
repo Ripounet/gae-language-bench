@@ -5,6 +5,7 @@ import datetime
 import webapp2
 
 from google.appengine.ext import ndb
+from google.appengine.api import memcache
 
 class Gopher(ndb.Model):
   Name = ndb.StringProperty()
@@ -13,9 +14,12 @@ class List(webapp2.RequestHandler):
   def get(self):
     self.response.out.write('<html><body>')
 
-    gophers = ndb.gql('SELECT * '
+    gophers = memcache.get('gopher-list-py')
+    if gophers is None:
+      gophers = ndb.gql('SELECT * '
                         'FROM Gopher '
                         'ORDER BY Name DESC LIMIT 20')
+      memcache.add('gopher-list-py', gophers)
 	
     self.response.out.write('<table> <tr><th>Id</th><th>Name</th></tr> ')
     for gopher in gophers:
