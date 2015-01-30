@@ -3,6 +3,7 @@ package businessapp
 import (
 	"bytes"
 	"encoding/gob"
+	"fmt"
 	"html/template"
 	"net/http"
 	"strconv"
@@ -91,7 +92,8 @@ func detail(w http.ResponseWriter, r *http.Request) {
 		var gopher Gopher
 		err := datastore.Get(c, gopherKey, &gopher)
 		if err != nil {
-			http.Error(w, "While getting the gopher in Datastore: "+err.Error(), http.StatusInternalServerError)
+			//http.Error(w, "While getting the gopher in Datastore: "+err.Error(), http.StatusInternalServerError)
+			fmt.Fprintf(w, "No gopher %v (yet).\n", gopherIdStr)
 			return
 		}
 
