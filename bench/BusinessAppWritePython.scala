@@ -7,10 +7,11 @@ import io.gatling.jdbc.Predef._
 
 import util.Random
 
-class BusinessAppWriteGo extends Simulation {
+class BusinessAppWritePython extends Simulation {
 
 	val httpProtocol = http
-		.baseURL("http://go.bench-business-app.appspot.com")
+//		.baseURL("http://go.bench-business-app.appspot.com")
+		.baseURL("http://localhost:8080")
 		.acceptHeader("text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8")
 		.acceptEncodingHeader("gzip, deflate")
 		.acceptLanguageHeader("en-US,en;q=0.5")
@@ -25,7 +26,7 @@ class BusinessAppWriteGo extends Simulation {
 			.formParam("name", _ => "RandomName" + (100 + Random.nextInt(900))))
 
 	setUp(scn.inject(
-//		rampUsersPerSec(0.2) to(1) during(10 seconds)
-		rampUsersPerSec(0.2) to(1) during(6 minutes)
+		rampUsersPerSec(0.2) to(4) during(20 seconds)
+//		rampUsersPerSec(0.2) to(1) during(6 minutes)
 		)).protocols(httpProtocol)
 }
