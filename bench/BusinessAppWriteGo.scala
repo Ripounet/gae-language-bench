@@ -25,7 +25,7 @@ class BusinessAppWriteGo extends Simulation {
 			.formParam("name", _ => "RandomName" + (100 + Random.nextInt(900))))
 
 	setUp(scn.inject(
-		rampUsersPerSec(0.2) to(1) during(10 seconds)
-//		rampUsersPerSec(0.2) to(1) during(10 minutes)
+//		rampUsersPerSec(0.2) to(1) during(10 seconds)
+		rampUsersPerSec(0.2) to(1) during(10 minutes)
 		)).protocols(httpProtocol)
 }

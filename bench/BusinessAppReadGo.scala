@@ -26,8 +26,8 @@ class BusinessAppReadGo extends Simulation {
 			.queryParam("id", _ => 100 + Random.nextInt(900)))
 
 	setUp(scn.inject(
-		rampUsersPerSec(0.2) to(1) during(10 seconds)
-//		rampUsersPerSec(0.2) to(10) during(10 minutes)
+//		rampUsersPerSec(0.2) to(1) during(10 seconds)
+		rampUsersPerSec(0.2) to(10) during(10 minutes)
 		)).protocols(httpProtocol)
 			
 }
