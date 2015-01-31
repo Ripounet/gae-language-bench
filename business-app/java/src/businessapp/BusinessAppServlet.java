@@ -23,16 +23,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.ServletException;
 
 public class BusinessAppServlet extends HttpServlet {
-
-	public static class GopherFacade {
-		String id;
-		String name;
-		public String getId(){ return id; }
-		public String getName(){ return name; }
-		public void setId(){}
-		public void setName(){}
-		public GopherFacade(String i, String n){ id=i; name=n; }
-	}
 	
 	@Override
     public void doGet(HttpServletRequest req, HttpServletResponse resp)

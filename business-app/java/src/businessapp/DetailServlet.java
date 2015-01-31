@@ -30,11 +30,20 @@ public class DetailServlet extends HttpServlet {
     	try {
     		Key gopherKey = KeyFactory.createKey("Gopher", id);
     		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    		Entity gopher = datastore.get(gopherKey);
+    		Entity entity = datastore.get(gopherKey);
+    		if(entity==null){
+    			resp.getWriter().print("No gopher " + idStr + " (yet)");
+    			return;
+    		}
+    		
+    		GopherFacade gopher = new GopherFacade(
+    				gopherKey.getId()+"", 
+    				(String) entity.getProperty("Name")
+    		);
 
-            //req.setAttribute("gopher", gopher);
-            req.setAttribute("id", gopherKey.getId());
-            req.setAttribute("name", gopher.getProperty("Name"));
+            req.setAttribute("gopher", gopher);
+            //req.setAttribute("id", gopherKey.getId());
+            //req.setAttribute("name", gopher.getProperty("Name"));
         	req.getRequestDispatcher("/detail.jsp").forward(req,resp);
     	}catch(EntityNotFoundException e){
     		throw new IllegalArgumentException(e);

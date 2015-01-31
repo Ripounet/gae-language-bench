@@ -27,7 +27,7 @@
 	<c:forEach var="gopher" varStatus="status" items="${gophers}">
     <tr>
       <td>${gopher.id}</td>
-      <td>${gopher.name}</td>
+      <td><a href="/detail?id=${gopher.id}">${gopher.name}</a></td>
     </tr>
 	</c:forEach>
   </table>
