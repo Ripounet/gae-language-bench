@@ -10,8 +10,8 @@ import util.Random
 class BusinessAppWritePython extends Simulation {
 
 	val httpProtocol = http
-//		.baseURL("http://python.bench-business-app.appspot.com")
-		.baseURL("http://localhost:8080")
+		.baseURL("http://python.bench-business-app.appspot.com")
+//		.baseURL("http://localhost:8080")
 		.acceptHeader("text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8")
 		.acceptEncodingHeader("gzip, deflate")
 		.acceptLanguageHeader("en-US,en;q=0.5")
