@@ -52,6 +52,9 @@ class Detail(webapp2.RequestHandler):
     if gopher is None:
       gopher_key = ndb.Key('Gopher', id)
       gopher=Gopher.get_by_id(id)
+      if gopher is None:
+        self.response.out.write("No gopher %s (yet)" % str(id))
+        return
       memcache.add('gopher-' + str(id) + '-py', gopher)
 	
     self.response.out.write("""
