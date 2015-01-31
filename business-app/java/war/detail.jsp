@@ -14,7 +14,7 @@
 
 <html>
 <head>
-  <title>Detail of gopher {{.Gopher.Id}}</title>
+  <title>Detail of gopher ${id}</title>
 </head>
 <body>
 
@@ -24,8 +24,8 @@
       <th>Name</th>
     </tr>
     <tr>
-      <td>{{.Gopher.Id}}</td>
-      <td>{{.Gopher.Name}}</td>
+      <td>${id}</td>
+      <td>${name}</td>
     </tr>
   </table>
   

@@ -11,6 +11,7 @@
 <%@ page import="com.google.appengine.api.datastore.Key" %>
 <%@ page import="com.google.appengine.api.datastore.KeyFactory" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <html>
 <head>
@@ -23,12 +24,12 @@
       <th>Id</th>
       <th>Name</th>
     </tr>
-    {{range .Gophers}}
+	<c:forEach var="gopher" varStatus="status" items="${gophers}">
     <tr>
-      <td>{{.Id}}</td>
-      <td>{{.Name}}</td>
+      <td>${gopher.id}</td>
+      <td>${gopher.name}</td>
     </tr>
-    {{end}}
+	</c:forEach>
   </table>
   
   <hr/>

@@ -5,6 +5,12 @@
 
 <web-app xmlns="http://java.sun.com/xml/ns/javaee" version="2.5">
 
+    <!-- 
+    <welcome-file-list>
+        <welcome-file>list.jsp</welcome-file>
+    </welcome-file-list>
+    -->
+    
     <servlet>
         <servlet-name>main</servlet-name>
         <servlet-class>businessapp.BusinessAppServlet</servlet-class>
@@ -15,21 +21,22 @@
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>detail</servlet-name>
-        <servlet-class>businessapp.DetailServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>detail</servlet-name>
-        <url-pattern>/detail</url-pattern>
-    </servlet-mapping>
-    
-    <servlet>
         <servlet-name>save</servlet-name>
         <servlet-class>businessapp.SaveServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>save</servlet-name>
         <url-pattern>/save</url-pattern>
+    </servlet-mapping>
+    
+    
+    <servlet>
+        <servlet-name>detail</servlet-name>
+        <servlet-class>businessapp.DetailServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>detail</servlet-name>
+        <url-pattern>/detail</url-pattern>
     </servlet-mapping>
     
 </web-app>

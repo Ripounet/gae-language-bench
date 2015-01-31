@@ -41,6 +41,20 @@ public class SaveServlet extends HttpServlet {
 
         resp.sendRedirect("/guestbook.jsp?guestbookName=" + guestbookName);
     	 */
-    	req.getRequestDispatcher("/list.jsp").forward(req,resp);
+    	String idStr = req.getParameter("id");
+    	long id = Long.parseLong( idStr );
+    	String name = req.getParameter("name");
+
+        Key gopherKey = KeyFactory.createKey("Gopher", id);
+        Entity gopher = new Entity(gopherKey);
+        gopher.setProperty("Name", name);
+        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+        datastore.put(gopher);
+        
+        resp.sendRedirect("/detail?id="+idStr);
+        //req.setAttribute("gopher", gopher);
+        //req.setAttribute("id", idStr);
+        //req.setAttribute("name", name);
+    	//req.getRequestDispatcher("/detail.jsp?id="+idStr).forward(req,resp);
     }
 }

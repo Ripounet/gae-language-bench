@@ -5,6 +5,7 @@ import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
+import com.google.appengine.api.datastore.EntityNotFoundException;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
@@ -21,26 +22,30 @@ public class DetailServlet extends HttpServlet {
 
 	@Override
     public void doGet(HttpServletRequest req, HttpServletResponse resp)
-                throws IOException {
+                throws IOException, ServletException {
+    	
+    	String idStr = req.getParameter("id");
+    	long id = Long.parseLong( idStr );
+
+    	try {
+    		Key gopherKey = KeyFactory.createKey("Gopher", id);
+    		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    		Entity gopher = datastore.get(gopherKey);
+
+            //req.setAttribute("gopher", gopher);
+            req.setAttribute("id", gopherKey.getId());
+            req.setAttribute("name", gopher.getProperty("Name"));
+        	req.getRequestDispatcher("/detail.jsp").forward(req,resp);
+    	}catch(EntityNotFoundException e){
+    		throw new IllegalArgumentException(e);
+    	}
+    	
     	
     }
     
     @Override
     public void doPost(HttpServletRequest req, HttpServletResponse resp)
                 throws IOException, ServletException {
-    	/*
-        Key guestbookKey = KeyFactory.createKey("Guestbook", guestbookName);
-        String content = req.getParameter("content");
-        Entity greeting = new Entity("Greeting", guestbookKey);
-        greeting.setProperty("user", user);
-        greeting.setProperty("date", date);
-        greeting.setProperty("content", content);
-
-        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-        datastore.put(greeting);
-
-        resp.sendRedirect("/guestbook.jsp?guestbookName=" + guestbookName);
-    	 */
-    	req.getRequestDispatcher("/list.jsp").forward(req,resp);
+        
     }
 }

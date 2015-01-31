@@ -1,5 +1,8 @@
 <project name="BusinessApp" default="compile">
+<!-- 
   <property name="appengine.sdk" location="/home/valou/Dev/appengine-java-1.9.17" />
+ -->
+  <property name="appengine.sdk" location="/Users/valentindeleplace/Dev/appengine-java-sdk-1.9.6/" />
 
   <import file="${appengine.sdk}/config/user/ant-macros.xml" />
 
