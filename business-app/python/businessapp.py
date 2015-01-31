@@ -17,8 +17,8 @@ class List(webapp2.RequestHandler):
     gophers = memcache.get('gopher-list-py')
     if gophers is None:
       gophers = ndb.gql('SELECT * '
-                        'FROM Gopher ')
-#                        'ORDER BY Name DESC LIMIT 20')
+                        'FROM Gopher '
+                        'ORDER BY Name DESC LIMIT 20')
       memcache.add('gopher-list-py', gophers)
 	
     self.response.out.write('<table> <tr><th>Id</th><th>Name</th></tr> ')
