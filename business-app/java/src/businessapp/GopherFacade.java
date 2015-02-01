@@ -1,6 +1,8 @@
 package businessapp;
 
-public class GopherFacade {
+import java.io.Serializable;
+
+public class GopherFacade implements Serializable {
 	String id;
 	String name;
 	public String getId(){ return id; }

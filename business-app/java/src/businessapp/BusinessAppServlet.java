@@ -8,9 +8,8 @@ import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.FetchOptions;
-import com.google.appengine.api.users.User;
-import com.google.appengine.api.users.UserService;
-import com.google.appengine.api.users.UserServiceFactory;
+import com.google.appengine.api.memcache.*;
+import org.apache.commons.lang3.SerializationUtils;
 
 import java.io.IOException;
 import java.util.Date;
@@ -27,16 +26,28 @@ public class BusinessAppServlet extends HttpServlet {
 	@Override
     public void doGet(HttpServletRequest req, HttpServletResponse resp)
                 throws IOException, ServletException {
+		ArrayList<GopherFacade> facades;
 
-		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-		//Entity gopher = datastore.get(gopherKey);
-		
-		Query q = new Query("Gopher");
-		PreparedQuery pq = datastore.prepare(q);
-		List<Entity> entities = pq.asList(FetchOptions.Builder.withLimit(20));
-		List<GopherFacade> facades = new ArrayList<>();
-		for(Entity e:entities)
-			facades.add( new GopherFacade(e.getKey().getId() + "", (String) e.getProperty("Name")) );
+	    MemcacheService syncCache = MemcacheServiceFactory.getMemcacheService();
+	    //syncCache.setErrorHandler(ErrorHandlers.getConsistentLogAndContinue(Level.INFO));
+	    String cacheKey = "gopher-list-java";
+	    byte[] data = (byte[]) syncCache.get(cacheKey);
+	    if (data != null) {
+	    	facades = (ArrayList<GopherFacade>) SerializationUtils.deserialize(data);
+	    }else{
+			DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+			//Entity gopher = datastore.get(gopherKey);
+			
+			Query q = new Query("Gopher");
+			PreparedQuery pq = datastore.prepare(q);
+			List<Entity> entities = pq.asList(FetchOptions.Builder.withLimit(20));
+			facades = new ArrayList<>();
+			for(Entity e:entities)
+				facades.add( new GopherFacade(e.getKey().getId() + "", (String) e.getProperty("Name")) );
+
+    		data = SerializationUtils.serialize(facades);
+    		syncCache.put(cacheKey, data);
+	    }
 
         req.setAttribute("gophers", facades);
         

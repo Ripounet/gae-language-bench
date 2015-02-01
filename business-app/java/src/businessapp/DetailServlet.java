@@ -6,9 +6,8 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.EntityNotFoundException;
-import com.google.appengine.api.users.User;
-import com.google.appengine.api.users.UserService;
-import com.google.appengine.api.users.UserServiceFactory;
+import com.google.appengine.api.memcache.*;
+import org.apache.commons.lang3.SerializationUtils;
 
 import java.io.IOException;
 import java.util.Date;
@@ -28,18 +27,31 @@ public class DetailServlet extends HttpServlet {
     	long id = Long.parseLong( idStr );
 
     	try {
-    		Key gopherKey = KeyFactory.createKey("Gopher", id);
-    		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    		Entity entity = datastore.get(gopherKey);
-    		if(entity==null){
-    			resp.getWriter().print("No gopher " + idStr + " (yet)");
-    			return;
-    		}
+    		GopherFacade gopher;
     		
-    		GopherFacade gopher = new GopherFacade(
-    				gopherKey.getId()+"", 
-    				(String) entity.getProperty("Name")
-    		);
+    	    MemcacheService syncCache = MemcacheServiceFactory.getMemcacheService();
+    	    //syncCache.setErrorHandler(ErrorHandlers.getConsistentLogAndContinue(Level.INFO));
+    	    String cacheKey = "gopher-" + idStr + "-java";
+    	    byte[] data = (byte[]) syncCache.get(cacheKey);
+    	    if (data != null) {
+    	    	gopher = (GopherFacade) SerializationUtils.deserialize(data);
+    	    }else{
+        		Key gopherKey = KeyFactory.createKey("Gopher", id);
+        		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+        		Entity entity = datastore.get(gopherKey);
+        		if(entity==null){
+        			resp.getWriter().print("No gopher " + idStr + " (yet)");
+        			return;
+        		}
+        		
+        		gopher = new GopherFacade(
+        				gopherKey.getId()+"", 
+        				(String) entity.getProperty("Name")
+        		);
+
+        		data = SerializationUtils.serialize(gopher);
+        		syncCache.put(cacheKey, data);
+    	    }
 
             req.setAttribute("gopher", gopher);
             //req.setAttribute("id", gopherKey.getId());
